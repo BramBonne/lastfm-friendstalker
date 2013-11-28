@@ -5,6 +5,7 @@ API_SECRET = ""
 import pylast
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from time import time, ctime, sleep
+import os
 
 class Scrobble:
     def __init__(self, timestamp, user, track):
@@ -32,7 +33,9 @@ while args['run_indefinitely']: # Keep running if this switch is on
             if int(played_track.timestamp) > time() - args['history_time']: # Less than 10 minutes ago
                 scrobbles.append(Scrobble(played_track.timestamp, friend, played_track.track))
 
-    print chr(27) + "[2J" # Clear screen
+    # Clear screen
+    clscommand = 'cls' if os.name=='nt' else 'clear'
+    os.system(clscommand)
     # Print all recent scrobbles
     for scrobble in sorted(scrobbles, key=lambda s: s.timestamp, reverse=True):
         friendname = scrobble.user.get_name()
