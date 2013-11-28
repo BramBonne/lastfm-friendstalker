@@ -5,7 +5,6 @@ API_SECRET = ""
 import pylast
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from time import time, ctime, sleep
-import os
 
 class Scrobble:
     def __init__(self, timestamp, user, track):
@@ -18,7 +17,8 @@ parser = ArgumentParser(description="Show your friends' last scrobbles on Last.f
 parser.add_argument('--username', '-u', dest='username', help='your Last.fm username', type=str, default='megooz')
 parser.add_argument('--history', dest='history_time', help='number of seconds ago to display scrobbles from', type=int, default=600)
 parser.add_argument('--max_tracks', '-t', dest='max_tracks', help='maximum number of tracks in history to display per friend', type=int, default=10)
-parser.add_argument('--run_indefinitely', action='store_true', dest='run_indefinitely', default=False)
+parser.add_argument('--run_indefinitely', action='store_true', dest='run_indefinitely', help='Keep running', default=False)
+parser.add_argument('--colorize', '-c', action='store_true', dest='colorize', help='Colorize terminal output', default=False)
 args = vars(parser.parse_args())
 
 network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET)
@@ -42,6 +42,9 @@ while args['run_indefinitely']: # Keep running if this switch is on
         artist = scrobble.track.get_artist()
         title = scrobble.track.get_title()
         timestring = ctime(scrobble.timestamp)
-        print "%s: %s - %s (%s)" % (friendname, artist, title, timestring)
+        if args['colorize']:
+            print "\033[41m%s\033[0m: \033[43m%s - %s\033[0m (\033[46m%s\033[0m)" % (friendname, artist, title, timestring)
+        else:
+            print "%s: %s - %s (%s)" % (friendname, artist, title, timestring)
     if args['run_indefinitely']:
         sleep(10) # Limit API calls
