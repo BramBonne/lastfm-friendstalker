@@ -28,7 +28,10 @@ prev_scrobbles = set()
 while args['run_indefinitely']: # Keep running if this switch is on
     scrobbles = []
     for friend in friends:
-        tracks = friend.get_recent_tracks(args['max_tracks'])
+        try:
+            tracks = friend.get_recent_tracks(args['max_tracks'])
+        except: # API error. Skip this update (might cause out-of-order scrobbles later, but is better than starting the round over)
+            continue
         for played_track in tracks:
             # Only keep scrobble if it's recent enough
             timestamp = int(played_track.timestamp)
