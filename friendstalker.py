@@ -42,8 +42,8 @@ while args['run_indefinitely']: # Keep running if this switch is on
     # Print all recent scrobbles
     for scrobble in sorted(scrobbles, key=lambda s: s.timestamp): # Sort them by timestamp
         friendname = scrobble.user.get_name()
-        artist = scrobble.track.get_artist()
-        title = scrobble.track.get_title()
+        artist = scrobble.track.get_artist().get_name().encode('utf-8')
+        title = scrobble.track.get_title().encode('utf-8')
         timestring = ctime(scrobble.timestamp)
         if args['colorize']:
             print "\033[41m%s\033[0m: \033[43m%s - %s\033[0m (\033[46m%s\033[0m)" % (friendname, artist, title, timestring)
