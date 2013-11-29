@@ -42,7 +42,7 @@ while args['run_indefinitely']: # Keep running if this switch is on
 
     # Print all recent scrobbles
     for scrobble in sorted(scrobbles, key=lambda s: s.timestamp): # Sort them by timestamp
-        friendname = scrobble.user.get_name()
+        friendname = scrobble.user.get_name().encode('utf-8')
         artist = scrobble.track.get_artist().get_name().encode('utf-8')
         title = scrobble.track.get_title().encode('utf-8')
         timestring = ctime(scrobble.timestamp)
