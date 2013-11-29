@@ -14,7 +14,7 @@ class Scrobble:
 
 parser = ArgumentParser(description="Show your friends' last scrobbles on Last.fm",
                                  formatter_class=ArgumentDefaultsHelpFormatter)
-parser.add_argument('--username', '-u', dest='username', help='your Last.fm username', type=str, default='megooz')
+parser.add_argument('--username', '-u', dest='username', help='your Last.fm username', type=str, required=True)
 parser.add_argument('--history', dest='history_time', help='number of seconds ago to display scrobbles from', type=int, default=600)
 parser.add_argument('--max_tracks', '-t', dest='max_tracks', help='maximum number of tracks in history to display per friend', type=int, default=10)
 parser.add_argument('--run_indefinitely', action='store_true', dest='run_indefinitely', help='Keep running', default=False)
@@ -34,7 +34,8 @@ while True: # Keep running if the 'run_indefinitely' command line switch is on
     for friend in friends:
         try:
             tracks = friend.get_recent_tracks(args['max_tracks'])
-        except: # API error. Skip this update (might cause out-of-order scrobbles later, but is better than starting the round over)
+        except Exception as e:
+            # API error. Skip this update (might cause out-of-order scrobbles later, but is better than starting the round over)
             continue
         for played_track in tracks:
             # Only keep scrobble if it's recent enough
