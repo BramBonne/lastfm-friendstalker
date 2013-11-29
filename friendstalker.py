@@ -24,6 +24,7 @@ args = vars(parser.parse_args())
 network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET)
 user = network.get_user(args['username'])
 friends = user.get_friends()
+friends.append(user)
 prev_scrobbles = set()
 while args['run_indefinitely']: # Keep running if this switch is on
     scrobbles = []
