@@ -47,7 +47,7 @@ while args['run_indefinitely']: # Keep running if this switch is on
         title = scrobble.track.get_title().encode('utf-8')
         timestring = ctime(scrobble.timestamp)
         if args['colorize']:
-            print "\033[41m%s\033[0m: \033[43m%s - %s\033[0m (\033[46m%s\033[0m)" % (friendname, artist, title, timestring)
+            print "\033[41m%s \033[43m %s - %s \033[46m %s\033[0m" % (friendname, artist, title, timestring)
         else:
             print "%s: %s - %s (%s)" % (friendname, artist, title, timestring)
     if args['run_indefinitely']:
