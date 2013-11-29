@@ -21,12 +21,15 @@ parser.add_argument('--run_indefinitely', action='store_true', dest='run_indefin
 parser.add_argument('--colorize', '-c', action='store_true', dest='colorize', help='Colorize terminal output', default=False)
 args = vars(parser.parse_args())
 
+print "Getting your friends..."
 network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET)
 user = network.get_user(args['username'])
 friends = user.get_friends()
 friends.append(user)
 prev_scrobbles = set()
-while args['run_indefinitely']: # Keep running if this switch is on
+
+print "Getting recent scrobbles..."
+while True: # Keep running if the 'run_indefinitely' command line switch is on
     scrobbles = []
     for friend in friends:
         try:
@@ -52,3 +55,5 @@ while args['run_indefinitely']: # Keep running if this switch is on
             print "%s: %s - %s (%s)" % (friendname, artist, title, timestring)
     if args['run_indefinitely']:
         sleep(10) # Limit API calls
+    else:
+        break
