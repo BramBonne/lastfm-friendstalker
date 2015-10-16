@@ -21,14 +21,14 @@ parser.add_argument('--run_indefinitely', action='store_true', dest='run_indefin
 parser.add_argument('--colorize', '-c', action='store_true', dest='colorize', help='Colorize terminal output', default=False)
 args = vars(parser.parse_args())
 
-print "Getting your friends..."
+print("Getting your friends...")
 network = pylast.get_lastfm_network(api_key=API_KEY, api_secret=API_SECRET)
 user = network.get_user(args['username'])
 friends = user.get_friends()
 friends.append(user)
 prev_scrobbles = set()
 
-print "Getting recent scrobbles..."
+print("Getting recent scrobbles...")
 while True: # Keep running if the 'run_indefinitely' command line switch is on
     scrobbles = []
     for friend in friends:
@@ -46,14 +46,14 @@ while True: # Keep running if the 'run_indefinitely' command line switch is on
 
     # Print all recent scrobbles
     for scrobble in sorted(scrobbles, key=lambda s: s.timestamp): # Sort them by timestamp
-        friendname = scrobble.user.get_name().encode('utf-8')
-        artist = scrobble.track.get_artist().get_name().encode('utf-8')
-        title = scrobble.track.get_title().encode('utf-8')
+        friendname = scrobble.user.get_name()
+        artist = scrobble.track.get_artist().get_name()
+        title = scrobble.track.get_title()
         timestring = ctime(scrobble.timestamp)
         if args['colorize']:
-            print "\033[41m%s \033[43m %s - %s \033[46m %s\033[0m" % (friendname, artist, title, timestring)
+            print("\033[41m%s \033[43m %s - %s \033[46m %s\033[0m" % (friendname, artist, title, timestring))
         else:
-            print "%s: %s - %s (%s)" % (friendname, artist, title, timestring)
+            print("%s: %s - %s (%s)" % (friendname, artist, title, timestring))
     if args['run_indefinitely']:
         sleep(10) # Limit API calls
     else:

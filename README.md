@@ -3,7 +3,7 @@ Program that allows you to see what your Last.fm friends are listening to in rea
 
 Run with:
 ```
-python2 friendstalker.py -u <your_lastfm_username>
+python friendstalker.py -u <your_lastfm_username>
 ```
 Optional arguments:
 ```
